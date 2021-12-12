@@ -15,37 +15,54 @@ class _StartPageState extends State<StartPage> {
         title: const Text("SepsisMonitor"),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              "Welcome to SepsisMonitor",
-              style: TextStyle(fontSize: 24),
-            ),
-            const Text(
-              "The Sepsis Department Manager App",
-              style: TextStyle(fontSize: 16),
-            ),
-            const SizedBox(
-              height: 16.0,
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed(
-                    "/login",
-                    arguments: null,
-                  );
-                },
-                child: const Text("TO LOGIN")),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed(
-                    "/registration",
-                    arguments: null,
-                  );
-                },
-                child: const Text("TO REGISTRATION")),
-          ],
+        child: Card(
+          margin: const EdgeInsets.all(16),
+          elevation: 4,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const SizedBox(
+                    height: 16.0,
+                  ),
+                  const Text(
+                    "SepsisMonitor",
+                    style: TextStyle(fontSize: 24),
+                  ),
+                  const Text(
+                    "The Sepsis Department Manager App",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(
+                    height: 16.0,
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(
+                          "/login",
+                          arguments: null,
+                        );
+                      },
+                      child: const Text("TO LOGIN")),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(
+                        "/registration",
+                        arguments: null,
+                      );
+                    },
+                    child: const Text("TO REGISTRATION"),
+                  ),
+                  const SizedBox(
+                    height: 16.0,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
