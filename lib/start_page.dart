@@ -23,7 +23,7 @@ class _StartPageState extends State<StartPage> {
               style: TextStyle(fontSize: 24),
             ),
             const Text(
-              "The Open Source Sepsis Department Manager",
+              "The Sepsis Department Manager App",
               style: TextStyle(fontSize: 16),
             ),
             const SizedBox(
@@ -36,10 +36,7 @@ class _StartPageState extends State<StartPage> {
                     arguments: null,
                   );
                 },
-                child: const Text("To Login")),
-            const SizedBox(
-              height: 8.0,
-            ),
+                child: const Text("TO LOGIN")),
             ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).pushNamed(
@@ -47,7 +44,7 @@ class _StartPageState extends State<StartPage> {
                     arguments: null,
                   );
                 },
-                child: const Text("To Registration")),
+                child: const Text("TO REGISTRATION")),
           ],
         ),
       ),
