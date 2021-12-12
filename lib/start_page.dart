@@ -8,6 +8,30 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
+  ElevatedButton _toLoginButton() {
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.of(context).pushNamed(
+          "/login",
+          arguments: null,
+        );
+      },
+      child: const Text("TO LOGIN"),
+    );
+  }
+
+  ElevatedButton _toRegistrationButton() {
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.of(context).pushNamed(
+          "/registration",
+          arguments: null,
+        );
+      },
+      child: const Text("TO REGISTRATION"),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,23 +63,8 @@ class _StartPageState extends State<StartPage> {
                   const SizedBox(
                     height: 16.0,
                   ),
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamed(
-                          "/login",
-                          arguments: null,
-                        );
-                      },
-                      child: const Text("TO LOGIN")),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(
-                        "/registration",
-                        arguments: null,
-                      );
-                    },
-                    child: const Text("TO REGISTRATION"),
-                  ),
+                  _toLoginButton(),
+                  _toRegistrationButton(),
                   const SizedBox(
                     height: 16.0,
                   ),
