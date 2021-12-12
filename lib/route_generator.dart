@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sepsis_monitor/login_page.dart';
 import 'package:sepsis_monitor/main.dart';
 import 'package:sepsis_monitor/start_page.dart';
 
@@ -8,8 +9,10 @@ class RouteGenerator {
     final args = settings.arguments;
 
     switch (settings.name) {
-      case '/':
+      case "/":
         return MaterialPageRoute(builder: (_) => const StartPage());
+      case '/login':
+        return MaterialPageRoute(builder: (_) => const LoginPage());
       // case '/second':
       //   // Validation of correct data type
       //   if (args is String) {
@@ -32,10 +35,10 @@ class RouteGenerator {
     return MaterialPageRoute(builder: (_) {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Error'),
+          title: const Text("Page not found"),
         ),
-        body: Center(
-          child: Text('ERROR'),
+        body: const Center(
+          child: Text("The requested page does not exist."),
         ),
       );
     });

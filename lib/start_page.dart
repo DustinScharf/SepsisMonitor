@@ -8,7 +8,6 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,8 +17,37 @@ class _StartPageState extends State<StartPage> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[
-            Text("Hi"),
+          children: <Widget>[
+            const Text(
+              "Welcome to SepsisMonitor",
+              style: TextStyle(fontSize: 24),
+            ),
+            const Text(
+              "The Open Source Sepsis Department Manager",
+              style: TextStyle(fontSize: 16),
+            ),
+            const SizedBox(
+              height: 16.0,
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed(
+                    "/login",
+                    arguments: null,
+                  );
+                },
+                child: const Text("To Login")),
+            const SizedBox(
+              height: 8.0,
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed(
+                    "/registration",
+                    arguments: null,
+                  );
+                },
+                child: const Text("To Registration")),
           ],
         ),
       ),
