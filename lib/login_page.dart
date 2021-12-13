@@ -12,6 +12,18 @@ class _LoginPageState extends State<LoginPage> {
   String _email = "";
   String _password = "";
 
+  @override
+  void initState() {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        print("Logout");
+      } else {
+        print("Login of " + user.email.toString());
+      }
+      super.initState();
+    });
+  }
+
   Container _emailTextField() {
     return Container(
       margin: const EdgeInsets.only(left: 50.0, right: 50.0),

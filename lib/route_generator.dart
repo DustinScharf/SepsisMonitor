@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sepsis_monitor/auth_manager.dart';
 import 'package:sepsis_monitor/login_page.dart';
 import 'package:sepsis_monitor/main.dart';
 import 'package:sepsis_monitor/registration_page.dart';
@@ -13,6 +14,7 @@ class RouteGenerator {
       case "/":
         return MaterialPageRoute(builder: (_) => const StartPage());
       case '/login':
+        // TODO check if already logged in
         return MaterialPageRoute(builder: (_) => const LoginPage());
       case '/registration':
         return MaterialPageRoute(builder: (_) => const RegistrationPage());

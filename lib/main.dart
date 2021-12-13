@@ -11,10 +11,6 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  AuthManager authManager = AuthManager();
-  authManager.logout();
-  authManager.start();
-
   runApp(const MyApp());
 }
 
