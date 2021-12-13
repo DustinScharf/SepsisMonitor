@@ -53,6 +53,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
             password: _password,
           );
           Navigator.of(context).pop();
+          // Navigator.of(context).popAndPushNamed(routeName); // TODO
         } on FirebaseAuthException catch (e) {
           if (e.code == 'weak-password') {
             print('The password provided is too weak.');
