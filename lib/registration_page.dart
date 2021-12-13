@@ -52,6 +52,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
             email: _email,
             password: _password,
           );
+          Navigator.of(context).pop();
         } on FirebaseAuthException catch (e) {
           if (e.code == 'weak-password') {
             print('The password provided is too weak.');
@@ -68,16 +69,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
-    FirebaseAuth.instance
-        .userChanges()
-        .listen((User? user) {
-      if (user == null) {
-        print('User is currently signed out!');
-      } else {
-        print('User is signed in!');
-      }
-    });
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Registration"),

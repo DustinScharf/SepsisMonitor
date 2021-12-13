@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import "package:flutter/material.dart";
+import 'package:sepsis_monitor/auth_manager.dart';
 import 'package:sepsis_monitor/route_generator.dart';
 import 'firebase_options.dart';
 
@@ -8,6 +10,11 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  AuthManager authManager = AuthManager();
+  authManager.logout();
+  authManager.start();
+
   runApp(const MyApp());
 }
 
@@ -108,10 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Text(
               '$_counter',
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .headline4,
+              style: Theme.of(context).textTheme.headline4,
             ),
           ],
         ),
