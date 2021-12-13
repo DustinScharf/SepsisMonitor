@@ -64,6 +64,9 @@ class _StartPageState extends State<StartPage> {
                     height: 16.0,
                   ),
                   _toLoginButton(),
+                  const SizedBox(
+                    height: 4.0,
+                  ),
                   _toRegistrationButton(),
                   const SizedBox(
                     height: 16.0,

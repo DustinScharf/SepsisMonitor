@@ -12,16 +12,26 @@ class _LoginPageState extends State<LoginPage> {
   String _email = "";
   String _password = "";
 
+  bool _alreadyLoggedIn = false;
+
   @override
   void initState() {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user == null) {
+        _alreadyLoggedIn = false;
         print("Logout");
       } else {
-        print("Login of " + user.email.toString());
+        if (!_alreadyLoggedIn) {
+          _alreadyLoggedIn = true;
+          print("Login of " + user.email.toString());
+          // Navigator.of(context).pushNamed( // TODO
+          //   "/registration",
+          //   arguments: null,
+          // );
+        }
       }
-      super.initState();
     });
+    super.initState();
   }
 
   Container _emailTextField() {
@@ -64,7 +74,6 @@ class _LoginPageState extends State<LoginPage> {
             email: _email,
             password: _password,
           );
-          print("INNNN!!");
         } on FirebaseAuthException catch (e) {
           if (e.code == 'user-not-found') {
             print('No user found for that email.');
