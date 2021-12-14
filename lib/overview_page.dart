@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class OverviewPage extends StatefulWidget {
@@ -8,8 +9,17 @@ class OverviewPage extends StatefulWidget {
 }
 
 class _OverviewPageState extends State<OverviewPage> {
+  _logout() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Text("Hi");
+    return ElevatedButton(
+        onPressed: () {
+          _logout();
+          Navigator.of(context).pop();
+        },
+        child: const Text("Logout"));
   }
 }

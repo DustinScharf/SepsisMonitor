@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sepsis_monitor/layout.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -16,17 +17,17 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      setState(() {
-        if (user == null) {
-          print("Logout");
-        } else {
-          print("Login of " + user.email.toString());
+      if (user == null) {
+        print("Logout");
+      } else {
+        print("Login of " + user.email.toString());
+        setState(() {
           Navigator.of(context).popAndPushNamed(
             "/overview",
             arguments: null,
           );
-        }
-      });
+        });
+      }
     });
     super.initState();
   }
@@ -34,7 +35,6 @@ class _LoginPageState extends State<LoginPage> {
   Container _emailTextField() {
     return Container(
       margin: const EdgeInsets.only(left: 50.0, right: 50.0),
-      width: Layout.maxWidth,
       child: TextField(
         onChanged: (text) {
           _email = text;
@@ -50,7 +50,6 @@ class _LoginPageState extends State<LoginPage> {
   Container _passwordTextField() {
     return Container(
       margin: const EdgeInsets.only(left: 50.0, right: 50.0),
-      width: Layout.maxWidth,
       child: TextField(
         onChanged: (text) {
           _password = text;
@@ -75,9 +74,24 @@ class _LoginPageState extends State<LoginPage> {
           );
         } on FirebaseAuthException catch (e) {
           if (e.code == 'user-not-found') {
-            print('No user found for that email.');
+            final snackBar = SnackBar(
+              content: const Text('No user found for that email.'),
+              action: SnackBarAction(
+                label: 'Register',
+                onPressed: () {
+                  Navigator.of(context).pushNamed(
+                    "/registration",
+                    arguments: null, // TODO pass email
+                  );
+                },
+              ),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
           } else if (e.code == 'wrong-password') {
-            print('Wrong password provided for that user.');
+            const snackBar = SnackBar(
+              content: Text('Wrong password provided for that user.'),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
         }
       },
@@ -99,36 +113,39 @@ class _LoginPageState extends State<LoginPage> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    const SizedBox(
-                      height: 16.0,
-                    ),
-                    const Text(
-                      "Login",
-                      style: TextStyle(fontSize: 24),
-                    ),
-                    const Text(
-                      "Enter your credentials",
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    const SizedBox(
-                      height: 16.0,
-                    ),
-                    _emailTextField(),
-                    const SizedBox(
-                      height: 16.0,
-                    ),
-                    _passwordTextField(),
-                    const SizedBox(
-                      height: 8.0,
-                    ),
-                    _loginButton(),
-                    const SizedBox(
-                      height: 16.0,
-                    ),
-                  ],
+                SizedBox(
+                  width: Layout.maxWidth,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      const SizedBox(
+                        height: 16.0,
+                      ),
+                      const Text(
+                        "Login",
+                        style: TextStyle(fontSize: 24),
+                      ),
+                      const Text(
+                        "Enter your credentials",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      const SizedBox(
+                        height: 16.0,
+                      ),
+                      _emailTextField(),
+                      const SizedBox(
+                        height: 16.0,
+                      ),
+                      _passwordTextField(),
+                      const SizedBox(
+                        height: 8.0,
+                      ),
+                      _loginButton(),
+                      const SizedBox(
+                        height: 16.0,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

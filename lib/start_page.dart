@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sepsis_monitor/layout.dart';
 
 class StartPage extends StatefulWidget {
   const StartPage({Key? key}) : super(key: key);
@@ -46,32 +47,35 @@ class _StartPageState extends State<StartPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const SizedBox(
-                    height: 16.0,
-                  ),
-                  const Text(
-                    "SepsisMonitor",
-                    style: TextStyle(fontSize: 24),
-                  ),
-                  const Text(
-                    "The Sepsis Department Manager App",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(
-                    height: 16.0,
-                  ),
-                  _toLoginButton(),
-                  const SizedBox(
-                    height: 4.0,
-                  ),
-                  _toRegistrationButton(),
-                  const SizedBox(
-                    height: 16.0,
-                  ),
-                ],
+              SizedBox(
+                width: Layout.maxWidth,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const SizedBox(
+                      height: 16.0,
+                    ),
+                    const Text(
+                      "SepsisMonitor",
+                      style: TextStyle(fontSize: 24),
+                    ),
+                    const Text(
+                      "The Sepsis Department Manager App",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(
+                      height: 16.0,
+                    ),
+                    _toLoginButton(),
+                    const SizedBox(
+                      height: 4.0,
+                    ),
+                    _toRegistrationButton(),
+                    const SizedBox(
+                      height: 16.0,
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

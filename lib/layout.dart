@@ -1,3 +1,3 @@
 class Layout {
-  static double maxWidth = 220;
+  static double maxWidth = 320;
 }
