@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sepsis_monitor/layout.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
@@ -15,6 +16,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   Container _emailTextField() {
     return Container(
       margin: const EdgeInsets.only(left: 50.0, right: 50.0),
+      width: Layout.maxWidth,
       child: TextField(
         onChanged: (text) {
           _email = text;
@@ -30,6 +32,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   Container _passwordTextField() {
     return Container(
       margin: const EdgeInsets.only(left: 50.0, right: 50.0),
+      width: Layout.maxWidth,
       child: TextField(
         onChanged: (text) {
           _password = text;
@@ -84,38 +87,36 @@ class _RegistrationPageState extends State<RegistrationPage> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      const SizedBox(
-                        height: 16.0,
-                      ),
-                      const Text(
-                        "Registration",
-                        style: TextStyle(fontSize: 24),
-                      ),
-                      const Text(
-                        "Enter your credentials",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      const SizedBox(
-                        height: 16.0,
-                      ),
-                      _emailTextField(),
-                      const SizedBox(
-                        height: 16.0,
-                      ),
-                      _passwordTextField(),
-                      const SizedBox(
-                        height: 8.0,
-                      ),
-                      _registrationButton(),
-                      const SizedBox(
-                        height: 16.0,
-                      ),
-                    ],
-                  ),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const SizedBox(
+                      height: 16.0,
+                    ),
+                    const Text(
+                      "Registration",
+                      style: TextStyle(fontSize: 24),
+                    ),
+                    const Text(
+                      "Enter your credentials",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(
+                      height: 16.0,
+                    ),
+                    _emailTextField(),
+                    const SizedBox(
+                      height: 16.0,
+                    ),
+                    _passwordTextField(),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    _registrationButton(),
+                    const SizedBox(
+                      height: 16.0,
+                    ),
+                  ],
                 ),
               ],
             ),
