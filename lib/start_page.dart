@@ -44,7 +44,7 @@ class _StartPageState extends State<StartPage> {
           elevation: 4,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Column(
                 mainAxisSize: MainAxisSize.min,

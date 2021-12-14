@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sepsis_monitor/layout.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -12,24 +13,20 @@ class _LoginPageState extends State<LoginPage> {
   String _email = "";
   String _password = "";
 
-  bool _alreadyLoggedIn = false;
-
   @override
   void initState() {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      if (user == null) {
-        _alreadyLoggedIn = false;
-        print("Logout");
-      } else {
-        if (!_alreadyLoggedIn) {
-          _alreadyLoggedIn = true;
+      setState(() {
+        if (user == null) {
+          print("Logout");
+        } else {
           print("Login of " + user.email.toString());
-          // Navigator.of(context).pushNamed( // TODO
-          //   "/registration",
-          //   arguments: null,
-          // );
+          Navigator.of(context).popAndPushNamed(
+            "/overview",
+            arguments: null,
+          );
         }
-      }
+      });
     });
     super.initState();
   }
@@ -37,6 +34,7 @@ class _LoginPageState extends State<LoginPage> {
   Container _emailTextField() {
     return Container(
       margin: const EdgeInsets.only(left: 50.0, right: 50.0),
+      width: Layout.maxWidth,
       child: TextField(
         onChanged: (text) {
           _email = text;
@@ -52,6 +50,7 @@ class _LoginPageState extends State<LoginPage> {
   Container _passwordTextField() {
     return Container(
       margin: const EdgeInsets.only(left: 50.0, right: 50.0),
+      width: Layout.maxWidth,
       child: TextField(
         onChanged: (text) {
           _password = text;
@@ -100,38 +99,36 @@ class _LoginPageState extends State<LoginPage> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      const SizedBox(
-                        height: 16.0,
-                      ),
-                      const Text(
-                        "Login",
-                        style: TextStyle(fontSize: 24),
-                      ),
-                      const Text(
-                        "Enter your credentials",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      const SizedBox(
-                        height: 16.0,
-                      ),
-                      _emailTextField(),
-                      const SizedBox(
-                        height: 16.0,
-                      ),
-                      _passwordTextField(),
-                      const SizedBox(
-                        height: 8.0,
-                      ),
-                      _loginButton(),
-                      const SizedBox(
-                        height: 16.0,
-                      ),
-                    ],
-                  ),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const SizedBox(
+                      height: 16.0,
+                    ),
+                    const Text(
+                      "Login",
+                      style: TextStyle(fontSize: 24),
+                    ),
+                    const Text(
+                      "Enter your credentials",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(
+                      height: 16.0,
+                    ),
+                    _emailTextField(),
+                    const SizedBox(
+                      height: 16.0,
+                    ),
+                    _passwordTextField(),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    _loginButton(),
+                    const SizedBox(
+                      height: 16.0,
+                    ),
+                  ],
                 ),
               ],
             ),
