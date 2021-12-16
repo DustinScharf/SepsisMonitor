@@ -3,6 +3,7 @@ import 'package:sepsis_monitor/auth_manager.dart';
 import 'package:sepsis_monitor/login_page.dart';
 import 'package:sepsis_monitor/main.dart';
 import 'package:sepsis_monitor/overview_page.dart';
+import 'package:sepsis_monitor/patient_list_page.dart';
 import 'package:sepsis_monitor/registration_page.dart';
 import 'package:sepsis_monitor/start_page.dart';
 
@@ -21,6 +22,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const RegistrationPage());
       case '/overview':
         return MaterialPageRoute(builder: (_) => const OverviewPage());
+      case '/patientlist':
+        return MaterialPageRoute(builder: (_) => const PatientListPage());
       // case '/second':
       //   // Validation of correct data type
       //   if (args is String) {

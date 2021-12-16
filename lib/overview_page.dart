@@ -51,20 +51,25 @@ class _OverviewPageState extends State<OverviewPage> {
                     SizedBox(
                       width: Layout.btnUniWidth,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(
+                            "/patientlist",
+                            arguments: null,
+                          );
+                        },
                         child: const Text("PATIENT LIST"),
                       ),
                     ),
-                    const SizedBox(
-                      height: 4.0,
-                    ),
-                    SizedBox(
-                      width: Layout.btnUniWidth,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        child: const Text("ONLY ERST LIST"),
-                      ),
-                    ),
+                    // const SizedBox( // todo
+                    //   height: 4.0,
+                    // ),
+                    // SizedBox(
+                    //   width: Layout.btnUniWidth,
+                    //   child: ElevatedButton(
+                    //     onPressed: () {},
+                    //     child: const Text("ONLY ERST LIST"),
+                    //   ),
+                    // ),
                     const SizedBox(
                       height: 4.0,
                     ),
