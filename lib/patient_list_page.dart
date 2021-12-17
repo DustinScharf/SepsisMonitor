@@ -88,7 +88,7 @@ class _PatientListPageState extends State<PatientListPage> {
   @override
   void initState() {
     Query patientsSorted = _patientsDbRef.orderByChild("phase");
-    // Subscribe to the query
+    // Subscribe to the query TODO: get only patients of a certain staff
     patientsSorted.onValue.listen((DatabaseEvent event) {
       setState(() {
         _patients.clear();
