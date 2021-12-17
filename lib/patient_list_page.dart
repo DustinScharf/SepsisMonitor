@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
@@ -13,40 +14,16 @@ class PatientListPage extends StatefulWidget {
 class _PatientListPageState extends State<PatientListPage> {
   final _patients = [];
   final _biggerFont = const TextStyle(fontSize: 18);
-  bool _listening = false;
 
-  final dbRef = FirebaseDatabase.instance.ref("hospital/patients");
+  final DatabaseReference _staffDbRef =
+      FirebaseDatabase.instance.ref("hospital/staff");
+  final DatabaseReference _patientsDbRef =
+      FirebaseDatabase.instance.ref("hospital/patients");
 
   Widget _buildPatientList() {
-    if (!_listening) {
-      DatabaseReference ref =
-          FirebaseDatabase.instance.ref("hospital/patients");
-      Query patientsSorted = ref.orderByChild("phase");
-
-      // Subscribe to the query
-      patientsSorted.onValue.listen((DatabaseEvent event) {
-        print('Event Type: ${event.type}'); // DatabaseEventType.value;
-        print('Snapshot: ${event.snapshot.value}'); // DataSnapshot
-        setState(() {
-          _patients.clear();
-          event.snapshot.children.forEach((element) {
-            LinkedHashMap patient = element.value as LinkedHashMap<Object?, Object?>;
-            _patients.add(patient["firstName"] + " " + patient["lastName"]);
-          });
-          // (event.snapshot.value as LinkedHashMap<Object?, Object?>)
-          //     .forEach((key, value) {
-          //   _patients.add(
-          //       (value as LinkedHashMap<Object?, Object?>)["phase"]); // todo
-          // });
-        });
-      });
-
-      _listening = true;
-    }
-
     return ListView.builder(
         padding: const EdgeInsets.all(16),
-        itemCount: _patients.length * 2,
+        itemCount: _patients.length * 2 - 1,
         itemBuilder: (BuildContext _context, int i) {
           if (i.isOdd) {
             return const Divider();
@@ -60,13 +37,42 @@ class _PatientListPageState extends State<PatientListPage> {
         });
   }
 
-  Widget _buildRow(Object linkedHashMap) {
+  Widget _buildRow(LinkedHashMap patient) {
     return ListTile(
       title: Text(
-        linkedHashMap.toString(),
+        _buildPatientInfo(patient),
         style: _biggerFont,
       ),
     );
+  }
+
+  String _buildPatientInfo(LinkedHashMap patient) {
+    String patientInfo = patient["firstName"] +
+        " " +
+        patient["lastName"] +
+        " in Phase " +
+        patient["phase"].toString();
+    if (patient.containsKey("staff")) {
+      LinkedHashMap staff = patient["staff"] as LinkedHashMap;
+      patientInfo += " @ " + staff["firstName"] + staff["lastName"];
+    }
+
+    return patientInfo;
+  }
+
+  _putStaffToPatient(String patientId, LinkedHashMap patient) async {
+    Query staffSorted = _staffDbRef.orderByChild("lastName");
+    staffSorted.onValue.listen((event) {
+      var staffList = event.snapshot.children.where((staffData) =>
+      ((staffData.value as LinkedHashMap).containsKey("patients") &&
+          ((staffData.value as LinkedHashMap)["patients"] as LinkedHashMap)
+              .containsKey(patientId)));
+      for (var staff in staffList) {
+        setState(() {
+          patient.putIfAbsent("staff", () => staff.value);
+        });
+      }
+    });
   }
 
   @override
@@ -77,5 +83,24 @@ class _PatientListPageState extends State<PatientListPage> {
       ),
       body: _buildPatientList(),
     );
+  }
+
+  @override
+  void initState() {
+    Query patientsSorted = _patientsDbRef.orderByChild("phase");
+    // Subscribe to the query
+    patientsSorted.onValue.listen((DatabaseEvent event) {
+      setState(() {
+        _patients.clear();
+        for (var element in event.snapshot.children) {
+          LinkedHashMap patient =
+              element.value as LinkedHashMap<Object?, Object?>;
+          _putStaffToPatient(element.key.toString(), patient);
+          _patients.add(patient);
+        }
+      });
+    });
+
+    super.initState();
   }
 }
