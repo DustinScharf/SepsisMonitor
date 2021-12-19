@@ -67,7 +67,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
           print(e);
         }
       },
-      child: const Text("CONFIRM"),
+      child: const Text("REGISTER"),
     );
   }
 
