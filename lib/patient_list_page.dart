@@ -95,9 +95,22 @@ class _PatientListPageState extends State<PatientListPage> {
         _buildBasicPatientInfo(patient),
         style: _biggerFont,
       ),
-      subtitle: Text(_buildAdvancedPatientInfo(patient)),
-      trailing: const Icon(Icons.more_vert),
-      isThreeLine: true,
+      subtitle: Text(_buildPhasePatientInfo(patient)),
+      trailing: Expanded(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          textDirection: TextDirection.ltr,
+          children: <Widget>[
+            Text(
+              _buildStaffPatientInfo(patient),
+              style: const TextStyle(color: Colors.grey),
+            ),
+            const SizedBox(width: 16),
+            const Icon(Icons.more_vert),
+          ],
+        ),
+      ),
     );
   }
 
@@ -106,15 +119,17 @@ class _PatientListPageState extends State<PatientListPage> {
     return patientInfo;
   }
 
-  String _buildAdvancedPatientInfo(LinkedHashMap patient) {
+  String _buildPhasePatientInfo(LinkedHashMap patient) {
     String patientInfo = _getPhaseString(patient);
+    return patientInfo;
+  }
+
+  String _buildStaffPatientInfo(LinkedHashMap patient) {
+    String patientInfo = "Unassigned";
     if (patient.containsKey("staff")) {
       LinkedHashMap staff = patient["staff"] as LinkedHashMap;
-      patientInfo += "\n" + staff["firstName"] + staff["lastName"];
-    } else {
-      patientInfo += "\nUnassigned";
+      patientInfo = staff["firstName"] + staff["lastName"];
     }
-
     return patientInfo;
   }
 
