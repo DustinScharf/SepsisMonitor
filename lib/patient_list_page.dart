@@ -21,6 +21,8 @@ class _PatientListPageState extends State<PatientListPage> {
   final DatabaseReference _patientsDbRef =
       FirebaseDatabase.instance.ref("hospital/patients");
 
+  String _dropdownValue = "More Info";
+
   Widget _buildPatientList() {
     if (_patients.isEmpty) {
       return Center(
@@ -66,50 +68,88 @@ class _PatientListPageState extends State<PatientListPage> {
     }
   }
 
-  IconData _getPhaseIconData(LinkedHashMap patient) {
+  Icon _getPhaseIcon(LinkedHashMap patient) {
+    IconData iconData;
+    double iconSize = 48;
+    Color? iconColor;
     switch (patient["phase"]) {
       case 0:
-        return Icons.app_registration;
+        iconData = Icons.app_registration;
+        break;
       case 1:
-        return Icons.assignment;
+        iconData = Icons.assignment;
+        break;
       case 2:
-        return Icons.add_alarm;
+        iconData = Icons.add_alarm;
+        iconColor = Colors.redAccent;
+        break;
       case 3:
-        return Icons.wifi_tethering;
+        iconData = Icons.wifi_tethering;
+        break;
       case 4:
-        return Icons.bed;
+        iconData = Icons.bed;
+        break;
       case 5:
-        return Icons.time_to_leave;
+        iconData = Icons.time_to_leave;
+        break;
+      case 6:
+        iconData = Icons.archive;
+        break;
       default:
-        return Icons.archive;
+        iconData = Icons.error;
+        break;
     }
+    return Icon(
+      iconData,
+      size: iconSize,
+      color: iconColor,
+    );
   }
 
   Widget _buildRow(LinkedHashMap patient) {
     return ListTile(
-      leading: Icon(
-        _getPhaseIconData(patient),
-        size: 48,
-      ),
+      leading: _getPhaseIcon(patient),
       title: Text(
         _buildBasicPatientInfo(patient),
         style: _biggerFont,
       ),
       subtitle: Text(_buildPhasePatientInfo(patient)),
-      trailing: Expanded(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          textDirection: TextDirection.ltr,
-          children: <Widget>[
-            Text(
-              _buildStaffPatientInfo(patient),
-              style: const TextStyle(color: Colors.grey),
-            ),
-            const SizedBox(width: 16),
-            const Icon(Icons.more_vert),
-          ],
-        ),
+      trailing: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        textDirection: TextDirection.ltr,
+        children: <Widget>[
+          Text(
+            _buildStaffPatientInfo(patient),
+            style: const TextStyle(color: Colors.grey),
+          ),
+          PopupMenuButton<String>(
+            onSelected: (String result) {
+              setState(() {
+                _dropdownValue = result;
+              });
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              PopupMenuItem<String>(
+                value: "Next Phase",
+                child: const Text("Next Phase"),
+                onTap: () {
+                  _patientsDbRef.child(patient["id"]).update({
+                    "phase": ServerValue.increment(1),
+                  });
+                },
+              ),
+              const PopupMenuItem<String>(
+                value: "Assign",
+                child: Text("Assign"),
+              ),
+              const PopupMenuItem<String>(
+                value: "More Info",
+                child: Text("More Info"),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -128,7 +168,7 @@ class _PatientListPageState extends State<PatientListPage> {
     String patientInfo = "Unassigned";
     if (patient.containsKey("staff")) {
       LinkedHashMap staff = patient["staff"] as LinkedHashMap;
-      patientInfo = staff["firstName"] + staff["lastName"];
+      patientInfo = staff["firstName"] + " " + staff["lastName"];
     }
     return patientInfo;
   }
@@ -139,7 +179,7 @@ class _PatientListPageState extends State<PatientListPage> {
       LinkedHashMap staffMap = event.snapshot.value as LinkedHashMap;
 
       Query patientsSorted = _patientsDbRef.orderByChild("phase");
-      // Subscribe to the query TODO: get only patients of a certain staff
+      // Subscribe to the query
       patientsSorted.onValue.listen((DatabaseEvent event) {
         setState(() {
           _patients.clear();
@@ -150,6 +190,7 @@ class _PatientListPageState extends State<PatientListPage> {
               LinkedHashMap patient =
                   element.value as LinkedHashMap<Object?, Object?>;
               _putStaffToPatient(element.key.toString(), patient);
+              patient.putIfAbsent("id", () => element.key);
               _patients.add(patient);
             }
           }
@@ -168,6 +209,7 @@ class _PatientListPageState extends State<PatientListPage> {
       for (var staff in staffList) {
         setState(() {
           patient.putIfAbsent("staff", () => staff.value);
+          patient["staff"] = staff.value;
         });
       }
     });
