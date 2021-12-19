@@ -25,11 +25,13 @@ class _PatientListPageState extends State<PatientListPage> {
 
   String _dropdownValue = "More Info";
 
+  bool _loaded = false;
+
   Widget _buildPatientList() {
     if (_patients.isEmpty) {
       return Center(
         child: Text(
-          "You don't have any patients...",
+          (_loaded ? "You don't have any patients..." : "Loading..."),
           style: _biggerFont,
         ),
       );
@@ -52,7 +54,11 @@ class _PatientListPageState extends State<PatientListPage> {
   }
 
   String _getPhaseString(LinkedHashMap patient) {
-    switch (patient["phase"]) {
+    return _getPhaseStringById(patient["phase"]);
+  }
+
+  String _getPhaseStringById(int phaseId) {
+    switch (phaseId) {
       case 0:
         return "Registration";
       case 1:
@@ -134,7 +140,7 @@ class _PatientListPageState extends State<PatientListPage> {
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
               PopupMenuItem<String>(
                 value: "Next Phase",
-                child: const Text("Next Phase"),
+                child: Text("Next Phase\n" + _getPhaseStringById(patient["phase"] + 1)),
                 onTap: () async {
                   DatabaseEvent event =
                       await _patientsLogDbRef.child(patient["id"]).once();
@@ -158,7 +164,7 @@ class _PatientListPageState extends State<PatientListPage> {
               ),
               const PopupMenuItem<String>(
                 value: "Assign",
-                child: Text("Assign"),
+                child: Text("Assign To Staff"),
               ),
               const PopupMenuItem<String>(
                 value: "More Info",
@@ -211,6 +217,7 @@ class _PatientListPageState extends State<PatientListPage> {
               _patients.add(patient);
             }
           }
+          _loaded = true;
         });
       });
     });
@@ -241,6 +248,16 @@ class _PatientListPageState extends State<PatientListPage> {
         title: const Text('Patient List'),
       ),
       body: _buildPatientList(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).pushNamed(
+            "/addpatient",
+            arguments: null,
+          );
+        },
+        tooltip: 'Add Patient',
+        child: const Icon(Icons.add),
+      ),
     );
   }
 
