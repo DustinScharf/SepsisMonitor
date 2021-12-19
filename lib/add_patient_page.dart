@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sepsis_monitor/layout.dart';
@@ -41,7 +44,6 @@ class _AddPatientPageState extends State<AddPatientPage> {
         onChanged: (text) {
           _lastName = text;
         },
-        obscureText: true,
         decoration: const InputDecoration(
           border: OutlineInputBorder(),
           labelText: "Last Name",
@@ -53,34 +55,26 @@ class _AddPatientPageState extends State<AddPatientPage> {
   ElevatedButton _addPatientButton() {
     return ElevatedButton(
       onPressed: () async {
-        // try {
-        //   UserCredential userCredential =
-        //       await FirebaseAuth.instance.signInWithEmailAndPassword(
-        //     email: _email,
-        //     password: _password,
-        //   );
-        // } on FirebaseAuthException catch (e) {
-        //   if (e.code == 'user-not-found') {
-        //     final snackBar = SnackBar(
-        //       content: const Text('No user found for that email.'),
-        //       action: SnackBarAction(
-        //         label: 'Register',
-        //         onPressed: () {
-        //           Navigator.of(context).pushNamed(
-        //             "/registration",
-        //             arguments: null, // TODO pass email
-        //           );
-        //         },
-        //       ),
-        //     );
-        //     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        //   } else if (e.code == 'wrong-password') {
-        //     const snackBar = SnackBar(
-        //       content: Text('Wrong password provided for that user.'),
-        //     );
-        //     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        //   }
-        // }
+        DatabaseReference newPatientRef =
+            FirebaseDatabase.instance.ref("hospital/patients").push();
+        await newPatientRef.set({
+          "firstName": _firstName,
+          "lastName": _lastName,
+          "lastUpdated": (DateTime.now().millisecondsSinceEpoch / 1000).ceil(),
+          "phase": 0,
+        });
+        String? staffId = FirebaseAuth.instance.currentUser?.uid;
+        await FirebaseDatabase.instance
+            .ref("hospital/log/patients")
+            .child(newPatientRef.key.toString())
+            .child("0")
+            .set({
+          "staff": staffId ??= "Anonymous",
+          "time": (DateTime.now().millisecondsSinceEpoch / 1000).ceil(),
+          "toPhase": 0,
+        });
+
+        Navigator.of(context).pop();
       },
       child: const Text("ADD PATIENT"),
     );

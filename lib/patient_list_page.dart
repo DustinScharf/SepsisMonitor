@@ -140,7 +140,8 @@ class _PatientListPageState extends State<PatientListPage> {
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
               PopupMenuItem<String>(
                 value: "Next Phase",
-                child: Text("Next Phase\n" + _getPhaseStringById(patient["phase"] + 1)),
+                child: Text(
+                    "Next Phase\n" + _getPhaseStringById(patient["phase"] + 1)),
                 onTap: () async {
                   DatabaseEvent event =
                       await _patientsLogDbRef.child(patient["id"]).once();
@@ -159,6 +160,8 @@ class _PatientListPageState extends State<PatientListPage> {
 
                   _patientsDbRef.child(patient["id"]).update({
                     "phase": patient["phase"] + 1,
+                    "lastUpdated":
+                        (DateTime.now().millisecondsSinceEpoch / 1000).ceil(),
                   });
                 },
               ),
