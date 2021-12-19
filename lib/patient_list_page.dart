@@ -20,6 +20,8 @@ class _PatientListPageState extends State<PatientListPage> {
       FirebaseDatabase.instance.ref("hospital/staff");
   final DatabaseReference _patientsDbRef =
       FirebaseDatabase.instance.ref("hospital/patients");
+  final DatabaseReference _patientsLogDbRef =
+      FirebaseDatabase.instance.ref("hospital/log/patients");
 
   String _dropdownValue = "More Info";
 
@@ -133,9 +135,24 @@ class _PatientListPageState extends State<PatientListPage> {
               PopupMenuItem<String>(
                 value: "Next Phase",
                 child: const Text("Next Phase"),
-                onTap: () {
+                onTap: () async {
+                  DatabaseEvent event =
+                      await _patientsLogDbRef.child(patient["id"]).once();
+                  int logItems = (event.snapshot.value as List).length;
+                  String? staffId = FirebaseAuth.instance.currentUser?.uid;
+                  staffId ??= "Anonymous";
+                  _patientsLogDbRef
+                      .child(patient["id"])
+                      .child(logItems.toString())
+                      .update({
+                    "staff": staffId,
+                    "time":
+                        (DateTime.now().millisecondsSinceEpoch / 1000).ceil(),
+                    "toPhase": patient["phase"] + 1,
+                  });
+
                   _patientsDbRef.child(patient["id"]).update({
-                    "phase": ServerValue.increment(1),
+                    "phase": patient["phase"] + 1,
                   });
                 },
               ),
@@ -210,6 +227,8 @@ class _PatientListPageState extends State<PatientListPage> {
         setState(() {
           patient.putIfAbsent("staff", () => staff.value);
           patient["staff"] = staff.value;
+          (patient["staff"] as LinkedHashMap)
+              .putIfAbsent("id", () => staff.key);
         });
       }
     });
