@@ -118,9 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      const SizedBox(
-                        height: 16.0,
-                      ),
+                      const SizedBox(height: 16.0),
                       const Text(
                         "Login",
                         style: TextStyle(fontSize: 24),
@@ -129,21 +127,13 @@ class _LoginPageState extends State<LoginPage> {
                         "Enter your credentials",
                         style: TextStyle(fontSize: 16),
                       ),
-                      const SizedBox(
-                        height: 16.0,
-                      ),
+                      const SizedBox(height: 16.0),
                       _emailTextField(),
-                      const SizedBox(
-                        height: 16.0,
-                      ),
+                      const SizedBox(height: 16.0),
                       _passwordTextField(),
-                      const SizedBox(
-                        height: 8.0,
-                      ),
+                      const SizedBox(height: 8.0),
                       _loginButton(),
-                      const SizedBox(
-                        height: 16.0,
-                      ),
+                      const SizedBox(height: 16.0),
                     ],
                   ),
                 ),
