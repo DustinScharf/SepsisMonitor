@@ -23,8 +23,11 @@ class _PatientListPageState extends State<PatientListPage> {
 
   Widget _buildPatientList() {
     if (_patients.isEmpty) {
-      return const Center(
-        child: Text("Loading..."),
+      return Center(
+        child: Text(
+          "You don't have any patients...",
+          style: _biggerFont,
+        ),
       );
     }
 
@@ -44,24 +47,72 @@ class _PatientListPageState extends State<PatientListPage> {
         });
   }
 
+  String _getPhaseString(LinkedHashMap patient) {
+    switch (patient["phase"]) {
+      case 0:
+        return "Registration";
+      case 1:
+        return "ER Triage";
+      case 2:
+        return "ER Sepsis Triage";
+      case 3:
+        return "IV Antibiotics";
+      case 4:
+        return "Admission";
+      case 5:
+        return "Release";
+      default:
+        return "Archive";
+    }
+  }
+
+  IconData _getPhaseIconData(LinkedHashMap patient) {
+    switch (patient["phase"]) {
+      case 0:
+        return Icons.app_registration;
+      case 1:
+        return Icons.assignment;
+      case 2:
+        return Icons.add_alarm;
+      case 3:
+        return Icons.wifi_tethering;
+      case 4:
+        return Icons.bed;
+      case 5:
+        return Icons.time_to_leave;
+      default:
+        return Icons.archive;
+    }
+  }
+
   Widget _buildRow(LinkedHashMap patient) {
     return ListTile(
+      leading: Icon(
+        _getPhaseIconData(patient),
+        size: 48,
+      ),
       title: Text(
-        _buildPatientInfo(patient),
+        _buildBasicPatientInfo(patient),
         style: _biggerFont,
       ),
+      subtitle: Text(_buildAdvancedPatientInfo(patient)),
+      trailing: const Icon(Icons.more_vert),
+      isThreeLine: true,
     );
   }
 
-  String _buildPatientInfo(LinkedHashMap patient) {
-    String patientInfo = patient["firstName"] +
-        " " +
-        patient["lastName"] +
-        " in Phase " +
-        patient["phase"].toString();
+  String _buildBasicPatientInfo(LinkedHashMap patient) {
+    String patientInfo = patient["firstName"] + " " + patient["lastName"];
+    return patientInfo;
+  }
+
+  String _buildAdvancedPatientInfo(LinkedHashMap patient) {
+    String patientInfo = _getPhaseString(patient);
     if (patient.containsKey("staff")) {
       LinkedHashMap staff = patient["staff"] as LinkedHashMap;
-      patientInfo += " @ " + staff["firstName"] + staff["lastName"];
+      patientInfo += "\n" + staff["firstName"] + staff["lastName"];
+    } else {
+      patientInfo += "\nUnassigned";
     }
 
     return patientInfo;
