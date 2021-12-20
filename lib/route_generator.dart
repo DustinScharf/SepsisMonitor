@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sepsis_monitor/add_patient_page.dart';
+import 'package:sepsis_monitor/assign_patient_page.dart';
 import 'package:sepsis_monitor/auth_manager.dart';
 import 'package:sepsis_monitor/login_page.dart';
 import 'package:sepsis_monitor/main.dart';
@@ -27,6 +28,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const PatientListPage());
       case '/addpatient':
         return MaterialPageRoute(builder: (_) => const AddPatientPage());
+      case '/assignpatient':
+        return MaterialPageRoute(builder: (_) => const AssignPatientPage());
       // case '/second':
       //   // Validation of correct data type
       //   if (args is String) {

@@ -23,9 +23,9 @@ class _PatientListPageState extends State<PatientListPage> {
   final DatabaseReference _patientsLogDbRef =
       FirebaseDatabase.instance.ref("hospital/log/patients");
 
-  String _dropdownValue = "More Info";
-
   bool _loaded = false;
+
+  String _dropdownValue = "More Info";
 
   Widget _buildPatientList() {
     if (_patients.isEmpty) {
@@ -136,6 +136,12 @@ class _PatientListPageState extends State<PatientListPage> {
               setState(() {
                 _dropdownValue = result;
               });
+              if (_dropdownValue == "Assign") {
+                Navigator.of(context).pushNamed(
+                  "/assignpatient",
+                  arguments: null, // todo pass staff id
+                );
+              }
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
               PopupMenuItem<String>(
