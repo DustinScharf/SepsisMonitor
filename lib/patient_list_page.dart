@@ -14,7 +14,7 @@ class PatientListPage extends StatefulWidget {
 
 class _PatientListPageState extends State<PatientListPage> {
   final _patients = [];
-  final _biggerFont = const TextStyle(fontSize: 18);
+  final TextStyle _biggerFont = const TextStyle(fontSize: 18);
 
   final DatabaseReference _staffDbRef =
       FirebaseDatabase.instance.ref("hospital/staff");
