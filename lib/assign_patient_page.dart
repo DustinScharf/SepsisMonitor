@@ -22,8 +22,8 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
 
   @override
   void initState() {
-    Query _staffsByPhase = _staffDbRef.orderByChild("isLMMP");
-    _staffsByPhase.onValue.listen((DatabaseEvent event) {
+    Query _staffsByIsLMMP = _staffDbRef.orderByChild("isLMMP");
+    _staffsByIsLMMP.onValue.listen((DatabaseEvent event) {
       setState(() {
         _staff.clear();
         for (var element in event.snapshot.children) {
