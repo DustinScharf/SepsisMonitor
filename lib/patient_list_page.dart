@@ -113,7 +113,7 @@ class _PatientListPageState extends State<PatientListPage> {
     );
   }
 
-  Widget _buildRow(LinkedHashMap patient) {
+  Widget _buildRow(LinkedHashMap patient) { // todo make shorter
     return ListTile(
       leading: _getPhaseIcon(patient),
       title: Text(
