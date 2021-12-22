@@ -310,9 +310,10 @@ class _PatientListPageState extends State<PatientListPage> {
         setState(() {
           _patients.clear();
           for (var element in event.snapshot.children) {
-            if (staffMap["patients"] == null ||
-                (staffMap["patients"] as LinkedHashMap)
-                    .containsKey(element.key)) {
+            if (staffMap["isLMMP"] == true ||
+                (staffMap.containsKey("patients") &&
+                    (staffMap["patients"] as LinkedHashMap)
+                        .containsKey(element.key))) {
               LinkedHashMap patient =
                   element.value as LinkedHashMap<Object?, Object?>;
               _putStaffToPatient(element.key.toString(), patient);

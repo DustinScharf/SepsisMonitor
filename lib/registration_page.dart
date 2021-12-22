@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sepsis_monitor/layout.dart';
@@ -13,6 +14,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
   String _email = "";
   String _password = "";
 
+  String _firstName = "";
+  String _lastName = "";
+
   Container _emailTextField() {
     return Container(
       margin: const EdgeInsets.only(left: 50.0, right: 50.0),
@@ -23,6 +27,36 @@ class _RegistrationPageState extends State<RegistrationPage> {
         decoration: const InputDecoration(
           border: OutlineInputBorder(),
           labelText: "Email",
+        ),
+      ),
+    );
+  }
+
+  Container _firstNameTextField() {
+    return Container(
+      margin: const EdgeInsets.only(left: 50.0, right: 50.0),
+      child: TextField(
+        onChanged: (text) {
+          _firstName = text;
+        },
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: "First Name",
+        ),
+      ),
+    );
+  }
+
+  Container _lastNameTextField() {
+    return Container(
+      margin: const EdgeInsets.only(left: 50.0, right: 50.0),
+      child: TextField(
+        onChanged: (text) {
+          _lastName = text;
+        },
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: "Last Name",
         ),
       ),
     );
@@ -53,6 +87,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
             email: _email,
             password: _password,
           );
+          String? newUId = userCredential.user?.uid;
+          newUId ??= "Loading error"; // todo better handling
+          FirebaseDatabase.instance.ref("hospital/staff").child(newUId).set({
+            "firstName": _firstName,
+            "lastName": _lastName,
+            "isLMMP": false, // todo
+            "confirmed": false,
+          });
           Navigator.of(context).popAndPushNamed(
             "/login",
             arguments: null,
@@ -90,9 +132,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      const SizedBox(
-                        height: 16.0,
-                      ),
+                      const SizedBox(height: 16.0),
                       const Text(
                         "Registration",
                         style: TextStyle(fontSize: 24),
@@ -101,21 +141,17 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         "Enter your credentials",
                         style: TextStyle(fontSize: 16),
                       ),
-                      const SizedBox(
-                        height: 16.0,
-                      ),
+                      const SizedBox(height: 16.0),
                       _emailTextField(),
-                      const SizedBox(
-                        height: 16.0,
-                      ),
+                      const SizedBox(height: 16.0),
                       _passwordTextField(),
-                      const SizedBox(
-                        height: 8.0,
-                      ),
+                      const SizedBox(height: 16.0),
+                      _firstNameTextField(),
+                      const SizedBox(height: 16.0),
+                      _lastNameTextField(),
+                      const SizedBox(height: 8.0),
                       _registrationButton(),
-                      const SizedBox(
-                        height: 16.0,
-                      ),
+                      const SizedBox(height: 16.0),
                     ],
                   ),
                 ),
