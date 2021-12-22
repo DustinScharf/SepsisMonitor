@@ -113,7 +113,148 @@ class _PatientListPageState extends State<PatientListPage> {
     );
   }
 
-  Widget _buildRow(LinkedHashMap patient) { // todo make shorter
+  List<PopupMenuEntry<String>> _buildPhaseSwitchPopUpButtons(
+      LinkedHashMap patient) {
+    List<PopupMenuEntry<String>> phaseSwitchButtons =
+        List<PopupMenuEntry<String>>.empty(growable: true);
+    if (patient["phase"] == 1) {
+      PopupMenuItem<String> nextPhasePopUpButton = PopupMenuItem<String>(
+        value: "Next Phase",
+        child: Text(
+          "To Phase\n" + _getPhaseStringById(2),
+          style: const TextStyle(
+            color: Colors.redAccent,
+          ),
+        ),
+        onTap: () async {
+          DatabaseEvent event =
+              await _patientsLogDbRef.child(patient["id"]).once();
+          int logItems = (event.snapshot.value as List).length;
+          String? staffId = FirebaseAuth.instance.currentUser?.uid;
+          staffId ??= "Anonymous";
+          _patientsLogDbRef
+              .child(patient["id"])
+              .child(logItems.toString())
+              .update({
+            "staff": staffId,
+            "time": (DateTime.now().millisecondsSinceEpoch / 1000).ceil(),
+            "toPhase": patient["phase"] + 1,
+          });
+
+          _patientsDbRef.child(patient["id"]).update({
+            "phase": patient["phase"] + 1,
+            "lastUpdated":
+                (DateTime.now().millisecondsSinceEpoch / 1000).ceil(),
+          });
+        },
+      );
+
+      PopupMenuItem<String> skipPhasePopUpButton = PopupMenuItem<String>(
+        value: "Skip Phase",
+        child: Text(
+          "To Phase\n" + _getPhaseStringById(4),
+          style: const TextStyle(
+            color: Colors.lightGreen,
+          ),
+        ),
+        onTap: () async {
+          DatabaseEvent event =
+              await _patientsLogDbRef.child(patient["id"]).once();
+          int logItems = (event.snapshot.value as List).length;
+          String? staffId = FirebaseAuth.instance.currentUser?.uid;
+          staffId ??= "Anonymous";
+          _patientsLogDbRef
+              .child(patient["id"])
+              .child(logItems.toString())
+              .update({
+            "staff": staffId,
+            "time": (DateTime.now().millisecondsSinceEpoch / 1000).ceil(),
+            "toPhase": patient["phase"] + 1,
+          });
+
+          _patientsDbRef.child(patient["id"]).update({
+            "phase": patient["phase"] + 1,
+            "lastUpdated":
+                (DateTime.now().millisecondsSinceEpoch / 1000).ceil(),
+          });
+        },
+      );
+
+      phaseSwitchButtons.add(nextPhasePopUpButton);
+      phaseSwitchButtons.add(skipPhasePopUpButton);
+    } else {
+      PopupMenuItem<String> nextPhasePopUpButton = PopupMenuItem<String>(
+        value: "Next Phase",
+        child: Text("Next Phase\n" + _getPhaseStringById(patient["phase"] + 1)),
+        onTap: () async {
+          DatabaseEvent event =
+              await _patientsLogDbRef.child(patient["id"]).once();
+          int logItems = (event.snapshot.value as List).length;
+          String? staffId = FirebaseAuth.instance.currentUser?.uid;
+          staffId ??= "Anonymous";
+          _patientsLogDbRef
+              .child(patient["id"])
+              .child(logItems.toString())
+              .update({
+            "staff": staffId,
+            "time": (DateTime.now().millisecondsSinceEpoch / 1000).ceil(),
+            "toPhase": patient["phase"] + 1,
+          });
+
+          _patientsDbRef.child(patient["id"]).update({
+            "phase": patient["phase"] + 1,
+            "lastUpdated":
+                (DateTime.now().millisecondsSinceEpoch / 1000).ceil(),
+          });
+        },
+      );
+      phaseSwitchButtons.add(nextPhasePopUpButton);
+    }
+    return phaseSwitchButtons;
+  }
+
+  List<PopupMenuEntry<String>> _buildPopupMenuEntries(LinkedHashMap patient) {
+    List<PopupMenuEntry<String>> popupMenuEntries = <PopupMenuEntry<String>>[];
+    popupMenuEntries.addAll(_buildPhaseSwitchPopUpButtons(patient));
+    popupMenuEntries.add(PopupMenuItem<String>(
+      value: "Assign",
+      child: Text(
+        "Assign To Staff",
+        style: TextStyle(
+          color: (patient.containsKey("staff") ? null : Colors.redAccent),
+        ),
+      ),
+    ));
+    popupMenuEntries.add(const PopupMenuItem<String>(
+      value: "More Info",
+      child: Text("More Info"),
+    ));
+    return popupMenuEntries;
+  }
+
+  PopupMenuButton<String> _buildPopUpMenuButton(LinkedHashMap patient) {
+    return PopupMenuButton<String>(
+      icon: Icon(
+        Icons.more_vert,
+        color: (patient.containsKey("staff") ? null : Colors.redAccent),
+      ),
+      onSelected: (String result) {
+        setState(() {
+          _dropdownValue = result;
+        });
+        if (_dropdownValue == "Assign") {
+          Navigator.of(context).pushNamed(
+            "/assignpatient",
+            arguments: null, // todo pass staff id
+          );
+        }
+      },
+      itemBuilder: (BuildContext context) => _buildPopupMenuEntries(patient),
+    );
+  }
+
+  Widget _buildRow(LinkedHashMap patient) {
+    // todo make shorter
     return ListTile(
       leading: _getPhaseIcon(patient),
       title: Text(
@@ -126,60 +267,8 @@ class _PatientListPageState extends State<PatientListPage> {
         mainAxisSize: MainAxisSize.min,
         textDirection: TextDirection.ltr,
         children: <Widget>[
-          Text(
-            _buildStaffPatientInfo(patient),
-            style: const TextStyle(color: Colors.grey),
-          ),
-          PopupMenuButton<String>(
-            onSelected: (String result) {
-              setState(() {
-                _dropdownValue = result;
-              });
-              if (_dropdownValue == "Assign") {
-                Navigator.of(context).pushNamed(
-                  "/assignpatient",
-                  arguments: null, // todo pass staff id
-                );
-              }
-            },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              PopupMenuItem<String>(
-                value: "Next Phase",
-                child: Text(
-                    "Next Phase\n" + _getPhaseStringById(patient["phase"] + 1)),
-                onTap: () async {
-                  DatabaseEvent event =
-                      await _patientsLogDbRef.child(patient["id"]).once();
-                  int logItems = (event.snapshot.value as List).length;
-                  String? staffId = FirebaseAuth.instance.currentUser?.uid;
-                  staffId ??= "Anonymous";
-                  _patientsLogDbRef
-                      .child(patient["id"])
-                      .child(logItems.toString())
-                      .update({
-                    "staff": staffId,
-                    "time":
-                        (DateTime.now().millisecondsSinceEpoch / 1000).ceil(),
-                    "toPhase": patient["phase"] + 1,
-                  });
-
-                  _patientsDbRef.child(patient["id"]).update({
-                    "phase": patient["phase"] + 1,
-                    "lastUpdated":
-                        (DateTime.now().millisecondsSinceEpoch / 1000).ceil(),
-                  });
-                },
-              ),
-              const PopupMenuItem<String>(
-                value: "Assign",
-                child: Text("Assign To Staff"),
-              ),
-              const PopupMenuItem<String>(
-                value: "More Info",
-                child: Text("More Info"),
-              ),
-            ],
-          ),
+          _buildStaffPatientText(patient),
+          _buildPopUpMenuButton(patient),
         ],
       ),
     );
@@ -195,13 +284,19 @@ class _PatientListPageState extends State<PatientListPage> {
     return patientInfo;
   }
 
-  String _buildStaffPatientInfo(LinkedHashMap patient) {
+  Text _buildStaffPatientText(LinkedHashMap patient) {
     String patientInfo = "Unassigned";
+    Color textColor = Colors.redAccent;
     if (patient.containsKey("staff")) {
       LinkedHashMap staff = patient["staff"] as LinkedHashMap;
       patientInfo = staff["firstName"] + " " + staff["lastName"];
+      textColor = Colors.grey;
     }
-    return patientInfo;
+
+    return Text(
+      patientInfo,
+      style: TextStyle(color: textColor),
+    );
   }
 
   _putPatientsForStaff(String staffId) {
