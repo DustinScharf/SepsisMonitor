@@ -4,7 +4,12 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class AssignPatientPage extends StatefulWidget {
-  const AssignPatientPage({Key? key}) : super(key: key);
+  final String data;
+
+  const AssignPatientPage({
+    Key? key,
+    required this.data,
+  }) : super(key: key);
 
   @override
   _AssignPatientPageState createState() => _AssignPatientPageState();
@@ -20,8 +25,19 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
 
   String _dropdownValue = "Show Patients";
 
+  String _patientName = "";
+
   @override
   void initState() {
+    FirebaseDatabase.instance
+        .ref("hospital/patients")
+        .child(widget.data)
+        .onValue
+        .listen((event) {
+      LinkedHashMap patientMap = event.snapshot.value as LinkedHashMap;
+      _patientName = patientMap["firstName"] + " " + patientMap["lastName"];
+    });
+
     Query _staffsByIsLMMP = _staffDbRef.orderByChild("isLMMP");
     _staffsByIsLMMP.onValue.listen((DatabaseEvent event) {
       setState(() {
@@ -90,9 +106,23 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
                     "/patientlist",
                     arguments: staff["id"], // todo pass staff id
                   );
+                } else if (_dropdownValue == "Assign") {
+                  _staffDbRef.child(staff["id"]).child("patients").update({
+                    widget.data: true,
+                  });
+                  Navigator.of(context).pop();
                 }
               },
               itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                PopupMenuItem<String>(
+                  value: "Assign",
+                  child: Text(
+                    "Assign Patient\n" + _patientName,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
                 const PopupMenuItem<String>(
                   value: "Show Patients",
                   child: Text("Show Patients"),
@@ -101,10 +131,6 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
             ),
           ],
         ),
-
-
-
-
       );
     }
 
@@ -125,7 +151,7 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Assign To Staff'),
+        title: Text('Assign ' + _patientName + ' To Staff'),
       ),
       body: _buildStaffList(),
       // floatingActionButton: FloatingActionButton(

@@ -33,7 +33,11 @@ class RouteGenerator {
       case '/addpatient':
         return MaterialPageRoute(builder: (_) => const AddPatientPage());
       case '/assignpatient':
-        return MaterialPageRoute(builder: (_) => const AssignPatientPage());
+        return MaterialPageRoute(
+          builder: (_) => AssignPatientPage(
+            data: args is String ? args : "",
+          ),
+        );
       // case '/second':
       //   // Validation of correct data type
       //   if (args is String) {

@@ -129,6 +129,7 @@ class _PatientListPageState extends State<PatientListPage> {
           "To Phase\n" + _getPhaseStringById(2),
           style: const TextStyle(
             color: Colors.redAccent,
+            fontWeight: FontWeight.bold,
           ),
         ),
         onTap: () async {
@@ -160,6 +161,7 @@ class _PatientListPageState extends State<PatientListPage> {
           "To Phase\n" + _getPhaseStringById(4),
           style: const TextStyle(
             color: Colors.lightGreen,
+            fontWeight: FontWeight.bold,
           ),
         ),
         onTap: () async {
@@ -190,7 +192,12 @@ class _PatientListPageState extends State<PatientListPage> {
     } else {
       PopupMenuItem<String> nextPhasePopUpButton = PopupMenuItem<String>(
         value: "Next Phase",
-        child: Text("Next Phase\n" + _getPhaseStringById(patient["phase"] + 1)),
+        child: Text(
+          "Next Phase\n" + _getPhaseStringById(patient["phase"] + 1),
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         onTap: () async {
           DatabaseEvent event =
               await _patientsLogDbRef.child(patient["id"]).once();
@@ -250,7 +257,7 @@ class _PatientListPageState extends State<PatientListPage> {
         if (_dropdownValue == "Assign") {
           Navigator.of(context).pushNamed(
             "/assignpatient",
-            arguments: null, // todo pass staff id
+            arguments: patient["id"], // todo pass staff id
           );
         }
       },
