@@ -25,7 +25,11 @@ class RouteGenerator {
       case '/overview':
         return MaterialPageRoute(builder: (_) => const OverviewPage());
       case '/patientlist':
-        return MaterialPageRoute(builder: (_) => const PatientListPage());
+        return MaterialPageRoute(
+          builder: (_) => PatientListPage(
+            data: args is String ? args : "",
+          ),
+        );
       case '/addpatient':
         return MaterialPageRoute(builder: (_) => const AddPatientPage());
       case '/assignpatient':

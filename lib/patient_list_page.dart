@@ -5,7 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class PatientListPage extends StatefulWidget {
-  const PatientListPage({Key? key}) : super(key: key);
+  final String data;
+
+  const PatientListPage({
+    Key? key,
+    required this.data,
+  }) : super(key: key);
 
   @override
   _PatientListPageState createState() => _PatientListPageState();
@@ -367,7 +372,12 @@ class _PatientListPageState extends State<PatientListPage> {
 
   @override
   void initState() {
-    String? uid = FirebaseAuth.instance.currentUser?.uid;
+    String? uid;
+    if (widget.data == "") {
+      uid = FirebaseAuth.instance.currentUser?.uid;
+    } else {
+      uid = widget.data;
+    }
     uid ??= "LOADING ERROR!"; // todo better handle
     _putPatientsForStaff(uid);
 
