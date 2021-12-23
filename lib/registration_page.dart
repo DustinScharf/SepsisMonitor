@@ -17,6 +17,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
   String _firstName = "";
   String _lastName = "";
 
+  String _dropdownValue = 'MMP';
+
   Container _emailTextField() {
     return Container(
       margin: const EdgeInsets.only(left: 50.0, right: 50.0),
@@ -92,7 +94,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
           FirebaseDatabase.instance.ref("hospital/staff").child(newUId).set({
             "firstName": _firstName,
             "lastName": _lastName,
-            "isLMMP": false, // todo
+            "isLMMP": _dropdownValue == "LMMP",
             "confirmed": false,
           });
           Navigator.of(context).popAndPushNamed(
@@ -149,6 +151,28 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       _firstNameTextField(),
                       const SizedBox(height: 16.0),
                       _lastNameTextField(),
+                      const SizedBox(height: 16.0),
+                      DropdownButton<String>(
+                        value: _dropdownValue,
+                        icon: const Icon(Icons.arrow_downward),
+                        elevation: 16,
+                        // underline: Container(
+                        //   height: 2,
+                        //   color: Colors.deepPurpleAccent,
+                        // ),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _dropdownValue = newValue!;
+                          });
+                        },
+                        items: <String>['MMP', 'LMMP']
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
                       const SizedBox(height: 8.0),
                       _registrationButton(),
                       const SizedBox(height: 16.0),
