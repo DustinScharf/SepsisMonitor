@@ -67,7 +67,7 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
           size: 48,
         ),
         title: Text(
-          staff["firstName"] + staff["lastName"],
+          staff["firstName"] + " " + staff["lastName"],
           style: _biggerFont,
         ),
         subtitle: Text(_patientCount(staff)),
