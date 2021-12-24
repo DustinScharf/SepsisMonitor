@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -83,6 +85,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
   ElevatedButton _registrationButton() {
     return ElevatedButton(
       onPressed: () async {
+        if (_email.isEmpty || _password.isEmpty || _firstName.isEmpty || _lastName.isEmpty) {
+          const snackBar = SnackBar(
+            content: Text('Enter all fields.'),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          return;
+        }
         try {
           UserCredential userCredential =
               await FirebaseAuth.instance.createUserWithEmailAndPassword(

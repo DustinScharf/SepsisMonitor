@@ -66,6 +66,13 @@ class _LoginPageState extends State<LoginPage> {
   ElevatedButton _loginButton() {
     return ElevatedButton(
       onPressed: () async {
+        if (_email.isEmpty || _password.isEmpty) {
+          const snackBar = SnackBar(
+            content: Text('Enter all fields.'),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          return;
+        }
         try {
           UserCredential userCredential =
               await FirebaseAuth.instance.signInWithEmailAndPassword(

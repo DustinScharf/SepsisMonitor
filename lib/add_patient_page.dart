@@ -55,6 +55,13 @@ class _AddPatientPageState extends State<AddPatientPage> {
   ElevatedButton _addPatientButton() {
     return ElevatedButton(
       onPressed: () async {
+        if (_firstName.isEmpty || _lastName.isEmpty) {
+          const snackBar = SnackBar(
+            content: Text('Enter all fields.'),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          return;
+        }
         DatabaseReference newPatientRef =
             FirebaseDatabase.instance.ref("hospital/patients").push();
         await newPatientRef.set({
