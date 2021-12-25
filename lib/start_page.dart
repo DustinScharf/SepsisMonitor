@@ -35,6 +35,7 @@ class _StartPageState extends State<StartPage> {
 
   @override
   Widget build(BuildContext context) {
+    // todo detected not chrome webbrowser and notify about possible errors
     return Scaffold(
       appBar: AppBar(
         title: const Text("SepsisMonitor"),
