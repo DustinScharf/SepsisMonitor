@@ -38,6 +38,7 @@ dependencies:
   firebase_core: ^1.10.5
   fluttertoast: ^8.0.8
   firebase_database: ^9.0.3
+  web_browser_detect: ^2.0.2
 
 dev_dependencies:
   flutter_test:

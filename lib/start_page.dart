@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sepsis_monitor/layout.dart';
+import 'package:web_browser_detect/web_browser_detect.dart';
 
 class StartPage extends StatefulWidget {
   const StartPage({Key? key}) : super(key: key);
@@ -31,6 +32,26 @@ class _StartPageState extends State<StartPage> {
       },
       child: const Text("TO REGISTRATION"),
     );
+  }
+
+  _browserInfo() {
+    List<String> supportedBrowsers = ["Chrome", "Safari", "Chromium Edge"];
+    if (!supportedBrowsers.contains(Browser().browser)) {
+      final Browser? _browser = Browser.detectOrNull();
+      return Container(
+        margin: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 10.0),
+        child: Text(
+          "Switch to Chrome, Safari or Edge if you encounter bugs with " +
+              (_browser?.browser ?? "your browser") +
+              ".",
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            color: Colors.redAccent,
+          ),
+        ),
+      );
+    }
+    return Container();
   }
 
   @override
@@ -75,6 +96,7 @@ class _StartPageState extends State<StartPage> {
                     const SizedBox(
                       height: 16.0,
                     ),
+                    _browserInfo(),
                   ],
                 ),
               ),
