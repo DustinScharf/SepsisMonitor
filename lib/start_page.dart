@@ -37,7 +37,9 @@ class _StartPageState extends State<StartPage> {
   _browserInfo() {
     List<String> supportedBrowsers = ["Chrome", "Safari", "Chromium Edge"];
     if (!supportedBrowsers.contains(Browser().browser)) {
-      // todo not works on mobile browsers
+      // todo detected if on web,
+      // todo if so print supported browsers and if also on mobile,
+      // todo print also app download links
       final Browser? _browser = Browser.detectOrNull();
       return Container(
         margin: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 10.0),
