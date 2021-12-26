@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sepsis_monitor/layout.dart';
 import 'package:web_browser_detect/web_browser_detect.dart';
@@ -35,20 +36,16 @@ class _StartPageState extends State<StartPage> {
   }
 
   _browserInfo() {
-    List<String> supportedBrowsers = ["Chrome", "Safari", "Chromium Edge"];
-    if (!supportedBrowsers.contains(Browser().browser)) {
+    if (kIsWeb) {
       // todo detected if on web,
       // todo if so print supported browsers and if also on mobile,
       // todo print also app download links
-      final Browser? _browser = Browser.detectOrNull();
       return Container(
         margin: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 10.0),
-        child: Text(
-          "Switch to Chrome, Safari or Edge if you encounter bugs with " +
-              (_browser?.browser ?? "your browser") +
-              ".",
+        child: const Text(
+          "Use newest Chrome, Safari or Edge if you encounter bugs.",
           textAlign: TextAlign.center,
-          style: const TextStyle(
+          style: TextStyle(
             color: Colors.redAccent,
           ),
         ),
