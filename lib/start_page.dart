@@ -35,7 +35,7 @@ class _StartPageState extends State<StartPage> {
     );
   }
 
-  _browserInfo() {
+  Container _browserInfo() {
     if (kIsWeb) {
       return Container(
         margin: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 10.0),
@@ -48,6 +48,13 @@ class _StartPageState extends State<StartPage> {
         ),
       );
     }
+    return Container();
+  }
+
+  Container _appDownloadInfo() {
+    // if (kIsWeb && TODO android || ios) {
+    //   // todo show app download buttons
+    // }
     return Container();
   }
 
@@ -94,6 +101,7 @@ class _StartPageState extends State<StartPage> {
                       height: 16.0,
                     ),
                     _browserInfo(),
+                    _appDownloadInfo(),
                   ],
                 ),
               ),
