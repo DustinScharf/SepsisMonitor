@@ -37,9 +37,6 @@ class _StartPageState extends State<StartPage> {
 
   _browserInfo() {
     if (kIsWeb) {
-      // todo detected if on web,
-      // todo if so print supported browsers and if also on mobile,
-      // todo print also app download links
       return Container(
         margin: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 10.0),
         child: const Text(
