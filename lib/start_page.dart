@@ -42,9 +42,9 @@ class _StartPageState extends State<StartPage> {
         child: const Text(
           "Use newest Chrome, Safari or Edge if you encounter bugs.",
           textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.redAccent,
-          ),
+          // style: TextStyle(
+          //   color: Colors.redAccent,
+          // ),
         ),
       );
     }
