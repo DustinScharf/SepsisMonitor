@@ -52,6 +52,8 @@ class _AddPatientPageState extends State<AddPatientPage> {
     );
   }
 
+  // todo add second button for instant assign
+  // todo (on me for mmp; go to assign staff page for lmmp)
   ElevatedButton _addPatientButton() {
     return ElevatedButton(
       onPressed: () async {
