@@ -31,6 +31,8 @@ class _PatientListPageState extends State<PatientListPage> {
 
   String _dropdownValue = "More Info";
 
+  String? _arguments;
+
   Widget _buildPatientList() {
     if (_patients.isEmpty) {
       return Center(
@@ -368,7 +370,7 @@ class _PatientListPageState extends State<PatientListPage> {
         onPressed: () {
           Navigator.of(context).pushNamed(
             "/addpatient",
-            arguments: null,
+            arguments: _arguments,
           );
         },
         tooltip: 'Add Patient',
@@ -387,6 +389,17 @@ class _PatientListPageState extends State<PatientListPage> {
     }
     uid ??= "LOADING ERROR!"; // todo better handle
     _putPatientsForStaff(uid);
+
+    FirebaseDatabase.instance
+        .ref("hospital/staff")
+        .child(uid)
+        .child("isLMMP")
+        .onValue
+        .listen((event) {
+      if (!(event.snapshot.value as bool)) {
+        _arguments = uid;
+      }
+    });
 
     super.initState();
   }
