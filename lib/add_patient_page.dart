@@ -54,8 +54,6 @@ class _AddPatientPageState extends State<AddPatientPage> {
     );
   }
 
-  // todo add second button for instant assign
-  // todo (on me for mmp; go to assign staff page for lmmp)
   SizedBox _onlyAddButton() {
     return SizedBox(
       width: Layout.smallButtonUniWidth,
