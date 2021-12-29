@@ -71,7 +71,7 @@ class _OverviewPageState extends State<OverviewPage> {
                       height: 12.0,
                     ),
                     SizedBox(
-                      width: Layout.btnUniWidth,
+                      width: Layout.bigButtonUniWidth,
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.of(context).pushNamed(
