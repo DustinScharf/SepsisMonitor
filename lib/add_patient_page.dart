@@ -6,7 +6,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sepsis_monitor/layout.dart';
 
 class AddPatientPage extends StatefulWidget {
-  const AddPatientPage({Key? key}) : super(key: key);
+  final String data;
+
+  const AddPatientPage({
+    Key? key,
+    required this.data,
+  }) : super(key: key);
 
   @override
   _AddPatientPageState createState() => _AddPatientPageState();
@@ -53,38 +58,97 @@ class _AddPatientPageState extends State<AddPatientPage> {
 
   // todo add second button for instant assign
   // todo (on me for mmp; go to assign staff page for lmmp)
-  ElevatedButton _addPatientButton() {
-    return ElevatedButton(
-      onPressed: () async {
-        if (_firstName.isEmpty || _lastName.isEmpty) {
-          const snackBar = SnackBar(
-            content: Text('Enter all fields.'),
-          );
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          return;
-        }
-        DatabaseReference newPatientRef =
-            FirebaseDatabase.instance.ref("hospital/patients").push();
-        await newPatientRef.set({
-          "firstName": _firstName,
-          "lastName": _lastName,
-          "lastUpdated": (DateTime.now().millisecondsSinceEpoch / 1000).ceil(),
-          "phase": 0,
-        });
-        String? staffId = FirebaseAuth.instance.currentUser?.uid;
-        await FirebaseDatabase.instance
-            .ref("hospital/log/patients")
-            .child(newPatientRef.key.toString())
-            .child("0")
-            .set({
-          "staff": staffId ??= "Anonymous",
-          "time": (DateTime.now().millisecondsSinceEpoch / 1000).ceil(),
-          "toPhase": 0,
-        });
+  SizedBox _onlyAddButton() {
+    return SizedBox(
+      width: Layout.smallButtonUniWidth,
+      child: ElevatedButton(
+        onPressed: () async {
+          if (_firstName.isEmpty || _lastName.isEmpty) {
+            const snackBar = SnackBar(
+              content: Text('Enter all fields.'),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            return;
+          }
+          DatabaseReference newPatientRef =
+              FirebaseDatabase.instance.ref("hospital/patients").push();
+          await newPatientRef.set({
+            "firstName": _firstName,
+            "lastName": _lastName,
+            "lastUpdated":
+                (DateTime.now().millisecondsSinceEpoch / 1000).ceil(),
+            "phase": 0,
+          });
+          String? staffId = FirebaseAuth.instance.currentUser?.uid;
+          if (widget.data.isNotEmpty) {
+            await FirebaseDatabase.instance
+                .ref("hospital/staff")
+                .child(widget.data)
+                .child("patients")
+                .update({
+              newPatientRef.key.toString(): true,
+            });
+          }
+          await FirebaseDatabase.instance
+              .ref("hospital/log/patients")
+              .child(newPatientRef.key.toString())
+              .child("0")
+              .set({
+            "staff": staffId ??= "Anonymous",
+            "time": (DateTime.now().millisecondsSinceEpoch / 1000).ceil(),
+            "toPhase": 0,
+          });
 
-        Navigator.of(context).pop();
-      },
-      child: const Text("ADD PATIENT"),
+          Navigator.of(context).pop();
+        },
+        child: Text(widget.data.isNotEmpty ? "ADD & ASSIGN ME" : "ONLY ADD"),
+      ),
+    );
+  }
+
+  Widget _instantAssignButton() {
+    if (widget.data.isNotEmpty) {
+      return Container();
+    }
+
+    return SizedBox(
+      width: Layout.smallButtonUniWidth,
+      child: ElevatedButton(
+        onPressed: () async {
+          if (_firstName.isEmpty || _lastName.isEmpty) {
+            const snackBar = SnackBar(
+              content: Text('Enter all fields.'),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            return;
+          }
+          DatabaseReference newPatientRef =
+              FirebaseDatabase.instance.ref("hospital/patients").push();
+          await newPatientRef.set({
+            "firstName": _firstName,
+            "lastName": _lastName,
+            "lastUpdated":
+                (DateTime.now().millisecondsSinceEpoch / 1000).ceil(),
+            "phase": 0,
+          });
+          String? staffId = FirebaseAuth.instance.currentUser?.uid;
+          await FirebaseDatabase.instance
+              .ref("hospital/log/patients")
+              .child(newPatientRef.key.toString())
+              .child("0")
+              .set({
+            "staff": staffId ??= "Anonymous",
+            "time": (DateTime.now().millisecondsSinceEpoch / 1000).ceil(),
+            "toPhase": 0,
+          });
+
+          Navigator.of(context).popAndPushNamed(
+            "/assignpatient",
+            arguments: newPatientRef.key.toString(),
+          );
+        },
+        child: const Text("INSTANT ASSIGN"),
+      ),
     );
   }
 
@@ -120,8 +184,10 @@ class _AddPatientPageState extends State<AddPatientPage> {
                       _firstNameTextField(),
                       const SizedBox(height: 16.0),
                       _lastNameTextField(),
-                      const SizedBox(height: 8.0),
-                      _addPatientButton(),
+                      const SizedBox(height: 16.0),
+                      _onlyAddButton(),
+                      const SizedBox(height: 4.0),
+                      _instantAssignButton(),
                       const SizedBox(height: 16.0),
                     ],
                   ),
