@@ -3,7 +3,6 @@ import 'package:sepsis_monitor/add_patient_page.dart';
 import 'package:sepsis_monitor/assign_patient_page.dart';
 import 'package:sepsis_monitor/auth_manager.dart';
 import 'package:sepsis_monitor/login_page.dart';
-import 'package:sepsis_monitor/main.dart';
 import 'package:sepsis_monitor/overview_page.dart';
 import 'package:sepsis_monitor/patient_list_page.dart';
 import 'package:sepsis_monitor/registration_page.dart';
