@@ -104,7 +104,7 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
                 if (_dropdownValue == "Show Patients") {
                   Navigator.of(context).pushNamed(
                     "/patientlist",
-                    arguments: staff["id"], // todo pass staff id
+                    arguments: staff["id"],
                   );
                 } else if (_dropdownValue == "Assign") {
                   _staffDbRef.child(staff["id"]).child("patients").update({
