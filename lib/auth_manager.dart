@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
+// todo expand and insert into project structure or delete this class
 class AuthManager {
   static bool _isLoggedIn = false;
 
