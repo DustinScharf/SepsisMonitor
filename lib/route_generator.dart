@@ -13,7 +13,7 @@ class RouteGenerator {
     final args = settings.arguments;
 
     switch (settings.name) {
-      case "/":
+      case '/':
         return MaterialPageRoute(builder: (_) => const StartPage());
       case '/login':
         // TODO check if already logged in
