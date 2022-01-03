@@ -16,7 +16,6 @@ class RouteGenerator {
       case '/':
         return MaterialPageRoute(builder: (_) => const StartPage());
       case '/login':
-        // TODO check if already logged in
         return MaterialPageRoute(builder: (_) => const LoginPage());
       case '/registration':
         return MaterialPageRoute(builder: (_) => const RegistrationPage());
