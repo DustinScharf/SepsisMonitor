@@ -27,7 +27,7 @@ class RouteGenerator {
             data: args is String ? args : "",
           ),
         );
-      case '/addpatient': // todo pass staff id if mmp for instant assign
+      case '/addpatient':
         return MaterialPageRoute(
           builder: (_) => AddPatientPage(
             data: args is String ? args : "",
