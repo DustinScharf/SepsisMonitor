@@ -30,7 +30,7 @@ class RouteGenerator {
       case '/addpatient':
         return MaterialPageRoute(
           builder: (_) => AddPatientPage(
-            data: args is String ? args : "",
+            data: args is String ? args : '',
           ),
         );
       case '/assignpatient':
