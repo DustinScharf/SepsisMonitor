@@ -52,7 +52,7 @@ class RouteGenerator {
       //   // You can also throw an exception while in development.
       //   return _errorRoute();
       default:
-        // If there is no such named route, to route error page
+        // If there is no such named route, go to route error page
         return _errorRoute();
     }
   }
