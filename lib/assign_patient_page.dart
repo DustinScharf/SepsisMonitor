@@ -101,7 +101,7 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
                 setState(() {
                   _dropdownValue = result;
                 });
-                if (_dropdownValue == "Show Patients") {
+                if (_dropdownValue == 'Show Patients') {
                   Navigator.of(context).pushNamed(
                     '/patientlist',
                     arguments: staff["id"],
