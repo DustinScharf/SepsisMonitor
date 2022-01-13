@@ -93,7 +93,7 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
           textDirection: TextDirection.ltr,
           children: <Widget>[
             Text(
-              staff["isLMMP"] ? "L-MMP" : "MMP",
+              staff['isLMMP'] ? 'L-MMP' : "MMP",
               style: const TextStyle(color: Colors.grey),
             ),
             PopupMenuButton<String>(
