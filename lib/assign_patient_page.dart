@@ -79,7 +79,7 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
         leading: Icon(
           Icons.person_add,
           // color: staff["isLMMP"] ? Colors.redAccent : Colors.lightGreen,
-          color: staff["isLMMP"] ? null : Colors.lightGreen,
+          color: staff['isLMMP'] ? null : Colors.lightGreen,
           size: 48,
         ),
         title: Text(
