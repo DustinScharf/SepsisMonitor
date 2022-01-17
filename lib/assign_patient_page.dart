@@ -78,7 +78,7 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
       return ListTile(
         leading: Icon(
           Icons.person_add,
-          // color: staff["isLMMP"] ? Colors.redAccent : Colors.lightGreen,
+          // color: staff['isLMMP'] ? Colors.redAccent : Colors.lightGreen,
           color: staff['isLMMP'] ? null : Colors.lightGreen,
           size: 48,
         ),
