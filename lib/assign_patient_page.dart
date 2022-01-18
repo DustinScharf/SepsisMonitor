@@ -59,7 +59,7 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
     if (_staff.isEmpty) {
       return Center(
         child: Text(
-          (_loaded ? "There are no MMPs..." : "Loading..."),
+          (_loaded ? 'There are no MMPs...' : 'Loading...'),
           style: _biggerFont,
         ),
       );
