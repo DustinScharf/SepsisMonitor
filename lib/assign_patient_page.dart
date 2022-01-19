@@ -68,9 +68,9 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
     String _patientCount(LinkedHashMap staff) {
       if (staff.containsKey("patients")) {
         return "Patients: " +
-            (staff["patients"] as LinkedHashMap).length.toString();
+            (staff['patients'] as LinkedHashMap).length.toString();
       } else {
-        return "Patients: 0";
+        return 'Patients: 0';
       }
     }
 
