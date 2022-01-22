@@ -20,7 +20,7 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
   final _biggerFont = const TextStyle(fontSize: 18);
 
   final DatabaseReference _staffDbRef =
-      FirebaseDatabase.instance.ref("hospital/staff");
+      FirebaseDatabase.instance.ref('hospital/staff');
   bool _loaded = false;
 
   String _dropdownValue = "Show Patients";
