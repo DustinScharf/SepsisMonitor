@@ -35,7 +35,7 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
         .onValue
         .listen((event) {
       LinkedHashMap patientMap = event.snapshot.value as LinkedHashMap;
-      _patientName = patientMap["firstName"] + " " + patientMap["lastName"];
+      _patientName = patientMap['firstName'] + " " + patientMap['lastName'];
     });
 
     Query _staffsByIsLMMP = _staffDbRef.orderByChild("isLMMP");
