@@ -30,7 +30,7 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
   @override
   void initState() {
     FirebaseDatabase.instance
-        .ref("hospital/patients")
+        .ref('hospital/patients')
         .child(widget.data)
         .onValue
         .listen((event) {
