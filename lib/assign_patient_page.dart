@@ -23,9 +23,9 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
       FirebaseDatabase.instance.ref('hospital/staff');
   bool _loaded = false;
 
-  String _dropdownValue = "Show Patients";
+  String _dropdownValue = 'Show Patients';
 
-  String _patientName = "";
+  String _patientName = '';
 
   @override
   void initState() {
