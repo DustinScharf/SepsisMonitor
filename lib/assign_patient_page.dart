@@ -38,7 +38,7 @@ class _AssignPatientPageState extends State<AssignPatientPage> {
       _patientName = patientMap['firstName'] + " " + patientMap['lastName'];
     });
 
-    Query _staffsByIsLMMP = _staffDbRef.orderByChild("isLMMP");
+    Query _staffsByIsLMMP = _staffDbRef.orderByChild('isLMMP');
     _staffsByIsLMMP.onValue.listen((DatabaseEvent event) {
       setState(() {
         _staff.clear();
