@@ -23,15 +23,15 @@ class _OverviewPageState extends State<OverviewPage> {
   @override
   void initState() {
     String? staffUID = FirebaseAuth.instance.currentUser?.uid;
-    staffUID ??= "Loading error";
+    staffUID ??= 'Loading error';
     DatabaseReference ref =
-        FirebaseDatabase.instance.ref("hospital/staff").child(staffUID);
+        FirebaseDatabase.instance.ref('hospital/staff').child(staffUID);
     Stream<DatabaseEvent> stream = ref.onValue;
     stream.listen((DatabaseEvent event) {
       LinkedHashMap staffMap = event.snapshot.value as LinkedHashMap;
       setState(() {
         _welcomeText =
-            "Welcome " + staffMap["firstName"] + " " + staffMap["lastName"];
+            "Welcome " + staffMap["firstName"] + " " + staffMap['lastName'];
       });
     });
     super.initState();
