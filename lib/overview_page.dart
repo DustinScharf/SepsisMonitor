@@ -31,7 +31,7 @@ class _OverviewPageState extends State<OverviewPage> {
       LinkedHashMap staffMap = event.snapshot.value as LinkedHashMap;
       setState(() {
         _welcomeText =
-            "Welcome " + staffMap['firstName'] + " " + staffMap['lastName'];
+            'Welcome ' + staffMap['firstName'] + " " + staffMap['lastName'];
       });
     });
     super.initState();
