@@ -14,7 +14,7 @@ class OverviewPage extends StatefulWidget {
 }
 
 class _OverviewPageState extends State<OverviewPage> {
-  String _welcomeText = "Welcome";
+  String _welcomeText = 'Welcome';
 
   _logout() async {
     await FirebaseAuth.instance.signOut();
