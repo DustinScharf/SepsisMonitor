@@ -75,11 +75,11 @@ class _OverviewPageState extends State<OverviewPage> {
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.of(context).pushNamed(
-                            "/patientlist",
+                            '/patientlist',
                             arguments: null,
                           );
                         },
-                        child: const Text("PATIENT LIST"),
+                        child: const Text('PATIENT LIST'),
                       ),
                     ),
                     // const SizedBox( // todo
