@@ -120,7 +120,7 @@ class _OverviewPageState extends State<OverviewPage> {
                         _logout();
                         Navigator.of(context).pop();
                       },
-                      child: const Text("LOGOUT"),
+                      child: const Text('LOGOUT'),
                     ),
                     const SizedBox(
                       height: 16.0,
