@@ -33,7 +33,7 @@ class _AddPatientPageState extends State<AddPatientPage> {
         },
         decoration: const InputDecoration(
           border: OutlineInputBorder(),
-          labelText: "First Name",
+          labelText: 'First Name',
         ),
       ),
     );
@@ -48,7 +48,7 @@ class _AddPatientPageState extends State<AddPatientPage> {
         },
         decoration: const InputDecoration(
           border: OutlineInputBorder(),
-          labelText: "Last Name",
+          labelText: 'Last Name',
         ),
       ),
     );
