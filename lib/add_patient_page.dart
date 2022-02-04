@@ -73,7 +73,7 @@ class _AddPatientPageState extends State<AddPatientPage> {
             'lastName': _lastName,
             'lastUpdated':
                 (DateTime.now().millisecondsSinceEpoch / 1000).ceil(),
-            "phase": 0,
+            'phase': 0,
           });
           String? staffId = FirebaseAuth.instance.currentUser?.uid;
           if (widget.data.isNotEmpty) {
