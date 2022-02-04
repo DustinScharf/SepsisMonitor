@@ -70,8 +70,8 @@ class _AddPatientPageState extends State<AddPatientPage> {
               FirebaseDatabase.instance.ref("hospital/patients").push();
           await newPatientRef.set({
             'firstName': _firstName,
-            "lastName": _lastName,
-            "lastUpdated":
+            'lastName': _lastName,
+            'lastUpdated':
                 (DateTime.now().millisecondsSinceEpoch / 1000).ceil(),
             "phase": 0,
           });
