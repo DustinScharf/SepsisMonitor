@@ -1,3 +1,3 @@
-# sepsis_monitor
+# Sepsis Monitor
 
 Sepsis Department Management App
