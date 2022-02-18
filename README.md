@@ -1,3 +1,3 @@
 # Sepsis Monitor
 
-A Sepsis Department Management App
+Sepsis Department Management App
